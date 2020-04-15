@@ -1,6 +1,9 @@
-﻿using softwareIIProject.Providers;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Web.Http;
 
 
@@ -11,44 +14,33 @@ namespace softwareIIProject.Controllers
 
         [HttpPost]
         // api/user/Register/storeOwner or normalUser 
-        public bool Register(String userType, String adminMail, String mail,String password)
+        public bool Register(String userType, String adminMail , JObject userInformation)
         {
             if(userType.Equals(UserContract.TABLE_ADMIN))
             {
                 if (!DummyLogin(adminMail)) return false;
             }
-            IDatabaseProvider provider = GetDatabaseProvider(userType);
-            Dictionary<String, String> credentials = new Dictionary<String, String>();
-            credentials.Add("mail", mail);
-            credentials.Add("password", password);
 
-            if (provider.Insert(credentials)) return true;
+            return AddEntry(userType, userInformation);
+          
 
-            return false;
+            
         }
 
 
         [HttpGet]
         // api/user/ListAllRegisteredUser
-        public Dictionary<string, List<Dictionary<string, object>>> ListAllRegisteredUser(String mail)
-        {
-            if (!DummyLogin(mail)) return null;
-            List<Dictionary<String, Object>> storeOwnerReader = new List<Dictionary<string, object>>();
-            IDatabaseProvider storeOwnerProvider = new StoreOwnerDatabaseProvider();
-            storeOwnerReader = storeOwnerProvider.Select();
-
-            List<Dictionary<String, Object>> normalUserReader = new List<Dictionary<string, object>>();
-            IDatabaseProvider normalUserProvider = new NormalUserDatabaseProvider();
-            normalUserReader = normalUserProvider.Select();
-            List<Dictionary<String, Object>> adminReader = new List<Dictionary<string, object>>();
-            IDatabaseProvider adminProvider = new AdminDatabaseProvider();
-            adminReader = adminProvider.Select();
-            Dictionary<String, List<Dictionary<String, Object>>> data=new Dictionary<string, List<Dictionary<string, object>>>();
-            data.Add("Normal Users", normalUserReader);
-            data.Add("Store Owners", storeOwnerReader);
-            data.Add("Admins", adminReader);
-
-            return data;
+        public Dictionary<String,object> ListAllRegisteredUser(String mail)
+        {   if (!DummyLogin(mail)) return null;
+            var store = new onlineStorePlatformEntities1();
+            var normalUsersList = from normalUser in store.normalUsers select normalUser.Email;
+            var storeOwnerList = from storeOwner in store.storeOwners select storeOwner.Email;
+            var adminsList = from Admin in store.Admins select Admin.Email;
+            Dictionary<String, object> resultList = new Dictionary<string, object>();
+            resultList.Add("Normal Users", normalUsersList);
+            resultList.Add("Store Owners", storeOwnerList);
+            resultList.Add("Admins", adminsList);
+             return resultList;
         }
         private Boolean DummyLogin(String mail)
         {
@@ -58,22 +50,54 @@ namespace softwareIIProject.Controllers
             }
             return false;
         }
-        private IDatabaseProvider GetDatabaseProvider(String entityName)
+        private Object GetEntity  (String entityName,JObject userInformation)
         {
-            if(entityName.Equals("storeOwner"))
+            if(entityName.Equals(UserContract.TABLE_STORE_OWNER))
             {
-                return new StoreOwnerDatabaseProvider();
+                return JsonConvert.DeserializeObject<storeOwner>(userInformation.ToString()); 
             }
-            else if(entityName.Equals("normalUser"))
+            else if(entityName.Equals(UserContract.TABLE_NORMAL_USER))
             {
-                return new NormalUserDatabaseProvider();
+                return  JsonConvert.DeserializeObject<normalUser>(userInformation.ToString());
             }
-            else if(entityName.Equals("Admin"))
+            else if(entityName.Equals(UserContract.TABLE_ADMIN))
             {
-                return new AdminDatabaseProvider();
+                return JsonConvert.DeserializeObject<Admin>(userInformation.ToString());
             }
             return null;
         }
-        
+        private Boolean AddEntry(String userType,JObject userInformation)
+        {
+            
+            var entity = GetEntity(userType, userInformation);
+            using (var store = new onlineStorePlatformEntities1()) {
+                if (userType.Equals(UserContract.TABLE_NORMAL_USER))
+                {
+                   store.normalUsers.Add((normalUser)entity) ;
+                   
+                }
+                else if(userType.Equals(UserContract.TABLE_STORE_OWNER))
+                 {
+                    store.storeOwners.Add((storeOwner)entity);
+                }
+                else if(userType.Equals(UserContract.TABLE_ADMIN))
+                {
+                    store.Admins.Add((Admin)entity);
+                }
+                try
+                {
+                    store.SaveChanges();
+                    return true;
+
+                }catch(DbUpdateException)
+                {
+                    return false;
+                }
+                
+             } 
+            
+            
+        }
+       
     }
 }
