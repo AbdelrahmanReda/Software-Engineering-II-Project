@@ -1,6 +1,0 @@
-namespace softwareIIProject.Areas.HelpPage.ModelDescriptions
-{
-    public class SimpleTypeModelDescription : ModelDescription
-    {
-    }
-}
