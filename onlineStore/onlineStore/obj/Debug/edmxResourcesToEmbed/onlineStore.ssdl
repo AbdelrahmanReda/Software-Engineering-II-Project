@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="onlineStorePlatformModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="NormalUser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="StoreOwner">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="email" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="role" Type="varchar" MaxLength="25" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Admin__email__5FB337D6">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Admin" Type="Self.Admin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Admin">
+        <PropertyRef Name="email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__NormalUse__email__6383C8BA">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="NormalUser" Type="Self.NormalUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="NormalUser">
+        <PropertyRef Name="email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StoreOwne__email__6754599E">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="StoreOwner" Type="Self.StoreOwner" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="StoreOwner">
+        <PropertyRef Name="email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="onlineStorePlatformModelStoreContainer">
+    <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NormalUser" EntityType="Self.NormalUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StoreOwner" EntityType="Self.StoreOwner" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Admin__email__5FB337D6" Association="Self.FK__Admin__email__5FB337D6">
+      <End Role="User" EntitySet="User" />
+      <End Role="Admin" EntitySet="Admin" />
+    </AssociationSet>
+    <AssociationSet Name="FK__NormalUse__email__6383C8BA" Association="Self.FK__NormalUse__email__6383C8BA">
+      <End Role="User" EntitySet="User" />
+      <End Role="NormalUser" EntitySet="NormalUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StoreOwne__email__6754599E" Association="Self.FK__StoreOwne__email__6754599E">
+      <End Role="User" EntitySet="User" />
+      <End Role="StoreOwner" EntitySet="StoreOwner" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
