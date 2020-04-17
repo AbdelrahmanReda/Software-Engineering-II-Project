@@ -17,10 +17,10 @@ namespace onlineStore.Controllers
         public bool Register(String userType, String adminMail, JObject userInformation)
         {
 
-            if(userType.Equals(UserContract.TABLE_ADMIN) && !(adminMail==null))
+            if (userType.Equals(UserContract.TABLE_ADMIN) && !(adminMail == null))
             { return RegisterAdmin(userInformation); }
-             return AddEntry(userType, userInformation);
-            
+            return AddEntry(userType, userInformation);
+
 
 
         }
@@ -29,9 +29,10 @@ namespace onlineStore.Controllers
         private Boolean RegisterAdmin(JObject userInfo)
         {
             using (var store = new onlineStorePlatformEntities())
-            {   
+            {
                 User userEntry = new User();
                 userEntry.Serialize(userInfo);
+                userEntry.role = UserContract.TABLE_ADMIN;
                 store.Users.Add(userEntry);
                 Admin adminEntry = new Admin();
                 adminEntry.Serialize(userInfo);
@@ -40,7 +41,7 @@ namespace onlineStore.Controllers
 
                 return true;
             }
-            
+
         }
 
         [HttpGet]
@@ -65,13 +66,15 @@ namespace onlineStore.Controllers
         private bool AddEntry(String userType, JObject userInformation)
         {
             Boolean save = false;
-            if (userType.Equals(UserContract.TABLE_ADMIN) || userType.Equals(UserContract.TABLE_NORMAL_USER))
+            if (userType.Equals(UserContract.TABLE_NORMAL_USER) || userType.Equals(UserContract.TABLE_STORE_OWNER))
             {
                 using (var store = new onlineStorePlatformEntities())
                 {
                     User userEntry = new User();
                     userEntry.Serialize(userInformation);
+                    userEntry.role = userType;
                     store.Users.Add(userEntry);
+
                     if (userType.Equals(UserContract.TABLE_NORMAL_USER))
                     {
                         NormalUser normalUserEntry = new NormalUser();
@@ -110,5 +113,5 @@ namespace onlineStore.Controllers
         }
     }
 }
-    
+
 
