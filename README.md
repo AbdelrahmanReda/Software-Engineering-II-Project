@@ -5,4 +5,4 @@ This platform is much like Amazon store but here our platform will focus on both
 We are building an API for our store. 
 
 # Getting Started
- Installing : install vs studio and idntity framework
+ Installing : install vs studio , idntity framework and Sql server  
