@@ -47,7 +47,7 @@ namespace onlineStore.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         // api/user/ListAllRegisteredUser
-        public Dictionary<String, object> ListAllRegisteredUser(String mail)
+        public Dictionary<String, object> ListAllRegisteredUser()
         {
 
             var store = new onlineStorePlatformEntities();
