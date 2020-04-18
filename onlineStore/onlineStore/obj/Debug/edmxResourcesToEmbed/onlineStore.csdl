@@ -71,7 +71,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="onlineStorePlatformEntities1" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="onlineStorePlatformEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Admins" EntityType="Self.Admin" />
     <EntitySet Name="NormalUsers" EntityType="Self.NormalUser" />
     <EntitySet Name="StoreOwners" EntityType="Self.StoreOwner" />

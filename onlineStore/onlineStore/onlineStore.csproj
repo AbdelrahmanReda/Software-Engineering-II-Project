@@ -8,7 +8,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{406A3487-15E1-43CB-B864-036CD7F12C3A}</ProjectGuid>
+    <ProjectGuid>{98ED5707-71EB-4494-B91A-93CE63FB9917}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -214,7 +214,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper_Code\OAuth2\AppOAuthProvider.cs" />
-    <Compile Include="ISerializable.cs" />
+    <Compile Include="ISerilazable.cs" />
     <Compile Include="NormalUser.cs">
       <DependentUpon>OnlineStore.tt</DependentUpon>
     </Compile>
@@ -340,9 +340,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>54302</DevelopmentServerPort>
+          <DevelopmentServerPort>52102</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:54302/</IISUrl>
+          <IISUrl>http://localhost:52102/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
